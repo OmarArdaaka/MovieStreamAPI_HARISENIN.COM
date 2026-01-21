@@ -3,15 +3,34 @@ import { FaCheck, FaPlay, FaPlus, FaEye, FaUndo } from "react-icons/fa";
 import { PiSpeakerSimpleSlashFill } from "react-icons/pi";
 import MovieCard from "../2-molecules/MovieCard";
 import Button from "../1-atoms/Button";
+import {
+  addToMyListAsync,
+  removeFromMyListAsync,
+  updateWatchedStatusAsync,
+} from "../../store/redux/slices/movieSlice";
 
 const MovieDetailModal = ({ movie, onClose, allMovies }) => {
+  // Safety check
+  if (!movie) return null;
+  
   // Get state dari Redux
   const { myMovieList } = useSelector((state) => state.movies);
   const dispatch = useDispatch();
 
-  // TODO: Implement add/remove/toggle watched actions dengan Redux if needed
+  // Handler functions
+  const addToMyList = (movie) => {
+    dispatch(addToMyListAsync(movie));
+  };
 
-  const recommendations = allMovies
+  const removeFromMyList = (movie) => {
+    dispatch(removeFromMyListAsync(movie.id));
+  };
+
+  const toggleWatchedStatus = () => {
+    dispatch(updateWatchedStatusAsync({ movieId: movie.id, watched: !isWatched }));
+  };
+
+  const recommendations = (allMovies || [])
     .filter((item) => item.id !== movie.id)
     .slice(0, 3);
 
@@ -90,7 +109,7 @@ const MovieDetailModal = ({ movie, onClose, allMovies }) => {
                           ? "Tandai Belum Ditonton"
                           : "Tandai Sudah Ditonton"
                       }
-                      onClick={() => toggleWatchedStatus(movie)}
+                      onClick={() => toggleWatchedStatus()}
                     >
                       {isWatched ? <FaUndo /> : <FaEye />}
                     </Button>

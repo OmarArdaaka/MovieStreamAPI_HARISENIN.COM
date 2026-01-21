@@ -41,14 +41,14 @@ export const getMyList = async () => {
 };
 
 // Create Data MyList
-export const addMovieToList = async (movieData) => {
+export const addMovieToList = async (movie) => {
   try {
     // Simulasi delay API
     await new Promise((resolve) => setTimeout(resolve, 300));
     const myList = getMyListFromStorage();
     const newItem = {
       id: Date.now(), // Generate ID unik
-      movieId: movieData.movieId,
+      movieId: movie.id, // Use movie.id from the movie object
       watched: false,
       createdAt: new Date().toISOString(),
     };
@@ -62,35 +62,35 @@ export const addMovieToList = async (movieData) => {
 };
 
 // Update Data isWatched status
-export const updateWatchedStatus = async (itemId, updatedData) => {
+export const updateWatchedStatus = async (movieId, watched) => {
   try {
     // Simulasi delay API
     await new Promise((resolve) => setTimeout(resolve, 300));
     const myList = getMyListFromStorage();
-    const index = myList.findIndex((item) => item.id === itemId);
+    const index = myList.findIndex((item) => item.movieId === movieId);
     if (index !== -1) {
-      myList[index] = { ...myList[index], ...updatedData };
+      myList[index].watched = watched;
       saveMyListToStorage(myList);
       return myList[index];
     }
-    throw new Error(`Item ${itemId} tidak ditemukan`);
+    throw new Error(`Movie with movieId ${movieId} tidak ditemukan`);
   } catch (error) {
-    console.log(`Gagal memperbarui status item ${itemId}:`, error);
+    console.log(`Gagal memperbarui status movie ${movieId}:`, error);
     throw error;
   }
 };
 
 // Delete movie from MyList
-export const removeMovieFromList = async (itemId) => {
+export const removeMovieFromList = async (movieId) => {
   try {
     // Simulasi delay API
     await new Promise((resolve) => setTimeout(resolve, 300));
     const myList = getMyListFromStorage();
-    const filteredList = myList.filter((item) => item.id !== itemId);
+    const filteredList = myList.filter((item) => item.movieId !== movieId);
     saveMyListToStorage(filteredList);
     return { success: true };
   } catch (error) {
-    console.log(`Gagal menghapus item ${itemId}`, error);
+    console.log(`Gagal menghapus movie ${movieId}`, error);
     throw error;
   }
 };
