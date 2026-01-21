@@ -10,25 +10,18 @@ import MyList from "./components/5-pages/MyList.jsx";
 import MyProfile from "./components/5-pages/MyProfile.jsx";
 import AddMoviePage from "./components/5-pages/AddMoviePage.jsx";
 import Toast from "./components/1-atoms/Toast.jsx";
-// import LoadingSpinner from "./components/1-atoms/LoadingSpinner.jsx";
-// import ErrorMessage from "./components/1-atoms/ErrorMessage.jsx";
-
-// import data
-// import { allMovies } from "./data/movies.js";
-// import { getMovies } from "./services/api.js";
-
-// Import Store
-import { useMovieStore } from "./store/movieStore.js";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchAllMovies, fetchMyList } from "./store/redux/slices/movieSlice.js";
 
 function App() {
-  // Get state and action yang relevan dari store
-  const { fetchAllMovies, notification, fetchMyList } = useMovieStore();
+  const dispatch = useDispatch();
+  const { notification } = useSelector((state) => state.movies);
 
   // Get data on first load
   useEffect(() => {
-    fetchAllMovies();
-    fetchMyList();
-  }, [fetchAllMovies, fetchMyList]);
+    dispatch(fetchAllMovies());
+    dispatch(fetchMyList());
+  }, [dispatch]);
 
   return (
     <>

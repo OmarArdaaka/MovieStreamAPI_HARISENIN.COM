@@ -1,18 +1,22 @@
 // import { useOutletContext } from "react-router-dom";
-import { useMovieStore } from "../../store/movieStore";
+import { useSelector } from "react-redux";
 import SectionContainer from "../4-templates/SectionContainer";
 import MovieCard from "../2-molecules/MovieCard";
 import MovieDetailModal from "../4-templates/MovieDetailModal";
 
 const MyList = () => {
-  // Get state and action from useMovieStore
-  const {
-    allMovies,
-    myMovieList,
-    selectedMovie,
-    handleMovieClick,
-    handleCloseModal,
-  } = useMovieStore();
+  // Get state from Redux
+  const { allMovies, myMovieList, selectedMovie } = useSelector(
+    (state) => state.movies
+  );
+
+  const handleMovieClick = (movie) => {
+    // This will be handled by Redux if needed
+  };
+
+  const handleCloseModal = () => {
+    // This will be handled by Redux if needed
+  };
 
   console.log("allMovies:", allMovies);
   console.log("myMovieList:", myMovieList);

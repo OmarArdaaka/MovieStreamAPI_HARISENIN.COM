@@ -1,5 +1,11 @@
 // import { useOutletContext } from "react-router-dom";
-import { useMovieStore } from "../../store/movieStore.js";
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  fetchAllMovies,
+  setSelectedMovie,
+  clearSelectedMovie,
+} from "../../store/redux/slices/movieSlice";
 
 // Import component
 import Button from "../1-atoms/Button";
@@ -14,9 +20,42 @@ import MovieDetailModal from "../4-templates/MovieDetailModal";
 // import { allMovies } from "../../data/movies.js";
 
 const Homepage = () => {
-  // Get state and action from useMovieStore
-  const { allMovies, selectedMovie, handleMovieClick, handleCloseModal } =
-    useMovieStore();
+  // Get dispatch and state from Redux
+  const dispatch = useDispatch();
+  const { allMovies = [], selectedMovie, loading, error } = useSelector(
+    (state) => state.movies
+  );
+
+  // Fetch movies on component mount
+  useEffect(() => {
+    dispatch(fetchAllMovies());
+  }, [dispatch]);
+
+  // Handle movie click
+  const handleMovieClick = (movie) => {
+    dispatch(setSelectedMovie(movie));
+  };
+
+  // Handle close modal
+  const handleCloseModal = () => {
+    dispatch(clearSelectedMovie());
+  };
+
+  if (loading || !allMovies || allMovies.length === 0) {
+    return (
+      <main className="flex justify-center items-center w-full bg-[#181A1C] min-h-screen">
+        <p className="text-white text-2xl">Loading...</p>
+      </main>
+    );
+  }
+
+  if (error) {
+    return (
+      <main className="flex justify-center items-center w-full bg-[#181A1C] min-h-screen">
+        <p className="text-red-500 text-2xl">{error}</p>
+      </main>
+    );
+  }
 
   return (
     <main className="flex flex-col flex-wrap w-full bg-[#181A1C] gap-15 min-h-screen pb-25">
@@ -67,7 +106,7 @@ const Homepage = () => {
         {/* Film Slider Landscape 1 */}
         <MovieListLandscape
           sectionTitle="Melanjutkan Tonton Film"
-          movies={allMovies}
+          movies={allMovies || []}
           filterType="top-rated"
           movieInfo={true}
           onMovieClick={handleMovieClick}
@@ -77,7 +116,7 @@ const Homepage = () => {
         {/* Top Rating*/}
         <MovieListPortrait
           sectionTitle="Top Rating Film dan Series Hari Ini"
-          movies={allMovies}
+          movies={allMovies || []}
           filterType=""
           movieBadge={true}
           onMovieClick={handleMovieClick}
@@ -87,7 +126,7 @@ const Homepage = () => {
         {/* Trending */}
         <MovieListPortrait
           sectionTitle="Film Trending"
-          movies={allMovies}
+          movies={allMovies || []}
           filterType="trending"
           movieBadge={true}
           onMovieClick={handleMovieClick}
@@ -96,7 +135,7 @@ const Homepage = () => {
         {/* New Release */}
         <MovieListPortrait
           sectionTitle="Rilis Baru"
-          movies={allMovies}
+          movies={allMovies || []}
           filterType="new-release"
           movieBadge={true}
           onMovieClick={handleMovieClick}

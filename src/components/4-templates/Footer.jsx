@@ -33,7 +33,7 @@ const helpLinks = [
 
 const Footer = () => {
   return (
-    <footer className="flex flex-col lg:flex-row gap-4 justify-center lg:justify-between w-full items-start px-5 pt-15 pb-10 lg:px-[80px] lg:py-25 bg-[#181A1C] text-white gap-[40px] border-t border-[#E7E3FC3B]">
+    <footer className="flex flex-col lg:flex-row justify-center lg:justify-between w-full items-start px-5 pt-15 pb-10 lg:px-[80px] lg:py-25 bg-[#181A1C] text-white gap-[40px] border-t border-[#E7E3FC3B]">
       <SectionCopyright src="/img/logo/logo.png" alt="Logo">
         @2025 Chill All Rights Reserved.
       </SectionCopyright>

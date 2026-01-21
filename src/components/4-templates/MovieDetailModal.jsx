@@ -1,13 +1,15 @@
-import { useMovieStore } from "../../store/movieStore";
+import { useSelector, useDispatch } from "react-redux";
 import { FaCheck, FaPlay, FaPlus, FaEye, FaUndo } from "react-icons/fa";
 import { PiSpeakerSimpleSlashFill } from "react-icons/pi";
 import MovieCard from "../2-molecules/MovieCard";
 import Button from "../1-atoms/Button";
 
 const MovieDetailModal = ({ movie, onClose, allMovies }) => {
-  // Get state dan action from useMovieStore
-  const { myMovieList, addToMyList, removeFromMyList, toggleWatchedStatus } =
-    useMovieStore();
+  // Get state dari Redux
+  const { myMovieList } = useSelector((state) => state.movies);
+  const dispatch = useDispatch();
+
+  // TODO: Implement add/remove/toggle watched actions dengan Redux if needed
 
   const recommendations = allMovies
     .filter((item) => item.id !== movie.id)
